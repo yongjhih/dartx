@@ -65,4 +65,12 @@ extension DoubleX<T extends double> on T {
     data.setFloat64(0, this, endian);
     return data.buffer.asUint8List();
   }
+
+  /// Round double to N decimal places
+  ///
+  /// roundDouble(0) equivalent to roundToDouble()
+  double roundDouble(int places) {
+    final mod = pow(10, places);
+    return ((this * mod).round().toDouble() / mod);
+  }
 }

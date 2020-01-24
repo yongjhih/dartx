@@ -21,6 +21,13 @@ void main() {
       expect(10.coerceAtMost(5), 5);
     });
 
-    test('.toBytes()', () {});
+    test('.roundDouble()', () {
+      expect(12.3412.roundDouble(2), 12.34);
+      expect(12.5668.roundDouble(2), 12.57);
+      expect(-12.3412.roundDouble(2), -12.34);
+      expect(-12.3456.roundDouble(2), -12.35);
+
+      expect(12.3412.roundDouble(0), 12.3412.roundToDouble());
+    });
   });
 }
