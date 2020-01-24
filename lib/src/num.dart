@@ -47,6 +47,18 @@ extension NumX<T extends num> on T {
   /// ```
   T coerceAtMost(T maximumValue) =>
       this > maximumValue ? maximumValue : this;
+
+  /// Subtracts the other value from this value.
+  T minus(T it) => it != null ? this - it : this;
+
+  /// Subtracts the other value from this value.
+  T minusOrNull(T it) => it != null ? this - it : null;
+
+  /// Adds the other value to this value.
+  T plus(T it) => it != null ? this + it : this;
+
+  /// Adds the other value to this value.
+  T plusOrNull(T it) => it != null ? this + it : null;
 }
 
 extension IntX<T extends int> on T {
@@ -56,6 +68,18 @@ extension IntX<T extends int> on T {
     data.setInt64(0, this, endian);
     return data.buffer.asUint8List();
   }
+
+  /// Subtracts the other value from this value.
+  T minus(num it) => it != null ? (this - it) as T : this;
+
+  /// Subtracts the other value from this value.
+  T minusOrNull(num it) => it != null ? (this - it) as T : null;
+
+  /// Adds the other value to this value.
+  T plus(num it) => it != null ? (this + it) as T : this;
+
+  /// Adds the other value to this value.
+  T plusOrNull(num it) => it != null ? (this + it) as T : null;
 }
 
 extension DoubleX<T extends double> on T {
@@ -65,4 +89,16 @@ extension DoubleX<T extends double> on T {
     data.setFloat64(0, this, endian);
     return data.buffer.asUint8List();
   }
+
+  /// Subtracts the other value from this value.
+  T minus(num it) => it != null ? (this - it) as T : this;
+
+  /// Subtracts the other value from this value.
+  T minusOrNull(num it) => it != null ? (this - it) as T : null;
+
+  /// Adds the other value to this value.
+  T plus(num it) => it != null ? (this + it) as T : this;
+
+  /// Adds the other value to this value.
+  T plusOrNull(num it) => it != null ? (this + it) as T : null;
 }
