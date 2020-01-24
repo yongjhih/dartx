@@ -29,5 +29,81 @@ void main() {
 
       expect(12.3412.roundDouble(0), 12.3412.roundToDouble());
     });
+
+    test('.minus() .plus()', () {
+      final num value = null;
+      expect(value?.minus(1), null);
+      expect(value?.minus(1) ?? -1, -1);
+      expect((value ?? 0) - 1, -1);
+      expect(() => value - 1, throwsNoSuchMethodError);
+
+      expect(value?.plus(1), null);
+      expect(value?.plus(1) ?? 1, 1);
+      expect((value ?? 0) + 1, 1);
+      expect(() => value + 1, throwsNoSuchMethodError);
+
+      expect(1.plus(value), 1);
+      expect(1.plusOrNull(value), null);
+      expect(1.plusOrNull(value) ?? 1, 1);
+      expect(() => 1 + value, throwsNoSuchMethodError);
+
+      expect(1.minus(value), 1);
+      expect(1.minusOrNull(value), null);
+      expect(1.minusOrNull(value) ?? 1, 1);
+      expect(() => 1 - value, throwsNoSuchMethodError);
+    });
+
+    test('.toBytes()', () {});
   });
+
+  group('IntX', () {
+    test('.minus() .plus()', () {
+      final int value = null;
+      expect(value?.minus(1), null);
+      expect(value?.minus(1) ?? -1, -1);
+      expect((value ?? 0) - 1, -1);
+      expect(() => value - 1, throwsNoSuchMethodError);
+
+      expect(value?.plus(1), null);
+      expect(value?.plus(1) ?? 1, 1);
+      expect((value ?? 0) + 1, 1);
+      expect(() => value + 1, throwsNoSuchMethodError);
+
+      expect(1.plus(value), 1);
+      expect(1.plusOrNull(value), null);
+      expect(1.plusOrNull(value) ?? 1, 1);
+      expect(() => 1 + value, throwsNoSuchMethodError);
+
+      expect(1.minus(value), 1);
+      expect(1.minusOrNull(value), null);
+      expect(1.minusOrNull(value) ?? 1, 1);
+      expect(() => 1 - value, throwsNoSuchMethodError);
+    });
+  });
+
+  group('DoubleX', () {
+    test('.minus() .plus()', () {
+      final double value = null;
+      expect(value?.minus(1), null);
+      expect(value?.minus(1) ?? -1, -1);
+      expect((value ?? 0) - 1, -1);
+      expect(() => value - 1, throwsNoSuchMethodError);
+
+      expect(value?.plus(1), null);
+      expect(value?.plus(1) ?? 1, 1);
+      expect((value ?? 0) + 1, 1);
+      expect(() => value + 1, throwsNoSuchMethodError);
+
+      expect(1.plus(value), 1);
+      expect(1.plusOrNull(value), null);
+      expect(1.plusOrNull(value) ?? 1, 1);
+      expect(() => 1 + value, throwsNoSuchMethodError);
+
+      expect(1.minus(value), 1);
+      expect(1.minusOrNull(value), null);
+      expect(1.minusOrNull(value) ?? 1, 1);
+      expect(() => 1 - value, throwsNoSuchMethodError);
+    });
+  });
+
 }
