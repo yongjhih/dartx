@@ -41,18 +41,18 @@ class ComparableRange<T extends Comparable<T>> extends ClosedRange<T> {
   final T _last;
 
   @override
+  T get start => _first;
+
+  @override
   bool contains(T value) {
     return start <= value && value <= endInclusive;
   }
 
   @override
-  T get endInclusive => _last;
-
-  @override
   bool get isEmpty => !(start <= endInclusive);
 
   @override
-  T get start => _first;
+  T get endInclusive => _last;
 
 }
 
@@ -87,20 +87,20 @@ extension IntRangeExtension on int {
   /// ```
   ///
   ///
-  IntRange rangeTo(int endInclusive) => IntRange(this, endInclusive, step: 1);
+  IntRange rangeTo(int endInclusive) =>
+    IntRange(this, endInclusive, step: 1);
+
+  IntProgression downTo(int endInclusive) =>
+    IntProgression(this, endInclusive, step: 1);
 }
 
-/// A iterable range between two ints which is iterable with a specific step
-/// size
-///
-/// int doesn't extend Comparable<int>, uses ClosedRange<num> instead.
-class IntRange extends IterableBase<int> implements ClosedRange<num> {
+class IntProgression extends IterableBase<int> {
   /// Creates a range between two ints ([first], [endInclusive]) which can be
   /// iterated through.
   ///
   /// [step] (optional, defaults to 1) has to be positive even when iterating
   /// downwards.
-  IntRange(int first, int endInclusive, {int step = 1})
+  IntProgression(int first, int endInclusive, {int step = 1})
       : _first = first,
         // can't initialize directly du to naming conflict with step() method
         // ignore: prefer_initializing_formals
@@ -135,6 +135,53 @@ class IntRange extends IterableBase<int> implements ClosedRange<num> {
 
   @override
   String toString() => '$start..$endInclusive';
+}
+
+/// A iterable range between two ints which is iterable with a specific step
+/// size
+///
+/// int doesn't extend Comparable<int>, uses ClosedRange<num> instead.
+class IntRange extends IntProgression implements ClosedRange<num> {
+  /// Creates a range between two ints ([first], [endInclusive]) which can be
+  /// iterated through.
+  ///
+  /// [step] (optional, defaults to 1) has to be positive even when iterating
+  /// downwards.
+  IntRange(int first, int endInclusive, {int step = 1})
+      : _first = first,
+        // can't initialize directly du to naming conflict with step() method
+        // ignore: prefer_initializing_formals
+        stepSize = step,
+        _last = endInclusive,
+        assert(() {
+          if (first == null) throw ArgumentError("start can't be null");
+          if (endInclusive == null) {
+            throw ArgumentError("endInclusive can't be null");
+          }
+          if (step == null) throw ArgumentError("step can't be null");
+          return true;
+        }()), super(first, endInclusive, step: step);
+
+  /// The first element in the range.
+  final int _first;
+
+  /// The last element in the range.
+  final int _last;
+
+  /// The step of the range.
+  final int stepSize;
+
+  @override
+  int get endInclusive => _last;
+
+  @override
+  int get start => _first;
+
+  @override
+  String toString() => '$start..$endInclusive';
+
+  @override
+  bool get isEmpty => !(start <= endInclusive);
 
   @override
   bool operator ==(Object other) =>
@@ -146,10 +193,10 @@ class IntRange extends IterableBase<int> implements ClosedRange<num> {
     isEmpty ? -1 : 31 * start.hashCode + endInclusive.hashCode;
 }
 
-extension IntRangeX on IntRange {
+extension IntProgressionX on IntProgression {
   /// Creates a [IntRange] with a different [stepSize],
   /// keeps first and last value
-  IntRange step(int step) => IntRange(_first, _last, step: step);
+  IntProgression step(int step) => IntProgression(_first, _last, step: step);
 }
 
 int _getProgressionLastElement(int start, int end, int step) {
