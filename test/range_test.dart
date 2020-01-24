@@ -73,10 +73,6 @@ void main() {
       expect(6.rangeTo(3).step(2).toList(), [6, 4]);
     });
 
-    test('step must be positive', () {
-      expect(() => 1.rangeTo(10).step(0), throwsA(isA<RangeError>()));
-      expect(() => 1.rangeTo(10).step(-2), throwsA(isA<RangeError>()));
-    });
   });
 
   group('IntRange properties', () {
@@ -95,14 +91,27 @@ void main() {
     });
   });
 
-  group('IntRange contains', () {
+  group('IntRange', () {
     test('contains', () {
       expect(0.rangeTo(10).step(2).contains(1), isFalse);
       expect(0.rangeTo(10).step(2).contains(0), isTrue);
       expect(0.rangeTo(10).step(2).contains(10), isTrue);
     });
+    test('isEmpty', () {
+      expect(1.rangeTo(2).isEmpty, false);
+      expect(2.rangeTo(1).isEmpty, true);
+    });
+    test('downTo', () {
+      expect(2.downTo(1).isEmpty, false);
+      List<int> actual = <int>[];
+      for (var i in 2.downTo(1)) {
+        actual.add(i);
+      }
+      print(actual);
+      expect(actual, [2, 1]);
+    });
 
-    test('contains', () {
+    test('toString', () {
       expect(0.rangeTo(1).toString(), '0..1');
     });
   });
