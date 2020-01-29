@@ -18,8 +18,28 @@ extension ComparableX<T extends Comparable<T>> on T {
       throw ArgumentError('Cannot coerce value to an empty range: '
           'maximum $maximumValue is less than minimum $minimumValue.');
     }
-    if (this < minimumValue) return minimumValue;
-    if (maximumValue != null && this > maximumValue) return maximumValue;
+    if (this < minimumValue) {
+      return null;
+    }
+
+    if (maximumValue != null && this > maximumValue) {
+      return null;
+    }
+
+    return this;
+  }
+
+  T coerceInOrNull(T minimumValue, [T maximumValue]) {
+    if (maximumValue != null && minimumValue > maximumValue) {
+      throw ArgumentError('Cannot coerce value to an empty range: '
+          'maximum $maximumValue is less than minimum $minimumValue.');
+    }
+    if (this < minimumValue) {
+      return null;
+    }
+    if (maximumValue != null && this > maximumValue) {
+      return null;
+    }
     return this;
   }
 
@@ -30,12 +50,26 @@ extension ComparableX<T extends Comparable<T>> on T {
   T coerceAtLeast(T minimumValue) =>
       this < minimumValue ? minimumValue : this;
 
+  T coerceAtLeastOrNull(T minimumValue) =>
+      this < minimumValue ? null : this;
+
   /// Ensures that this value is not greater than the specified [maximumValue].
   ///
   /// @return this value if it's less than or equal to the [maximumValue]
   /// or the [maximumValue] otherwise.
   T coerceAtMost(T maximumValue) =>
       this > maximumValue ? maximumValue : this;
+
+  T coerceAtMostOrNull(T maximumValue) =>
+      this > maximumValue ? null : this;
+
+  T minOf(T a, T b) => (a <= b) ? a : b;
+
+  T minOf3(T a, T b, T c) => minOf(a, minOf(b, c));
+
+  T maxOf(T a, T b) => (a >= b) ? a : b;
+
+  T maxOf3(T a, T b, T c) => maxOf(a, maxOf(b, c));
 
   /// Returns true if between [first] and [endInclusive].
   ///

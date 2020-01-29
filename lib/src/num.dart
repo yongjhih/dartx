@@ -24,6 +24,20 @@ extension NumX<T extends num> on T {
     return this;
   }
 
+  T coerceInOrNull(T minimumValue, [T maximumValue]) {
+    if (maximumValue != null && minimumValue > maximumValue) {
+      throw ArgumentError('Cannot coerce value to an empty range: '
+          'maximum $maximumValue is less than minimum $minimumValue.');
+    }
+    if (this < minimumValue) {
+      return null;
+    }
+    if (maximumValue != null && this > maximumValue) {
+      return null;
+    }
+    return this;
+  }
+
   /// Ensures that this value is not less than the specified [minimumValue].
   ///
   /// Return this value if it's greater than or equal to the [minimumValue]
@@ -36,6 +50,9 @@ extension NumX<T extends num> on T {
   T coerceAtLeast(T minimumValue) =>
       this < minimumValue ? minimumValue : this;
 
+  T coerceAtLeastOrNull(T minimumValue) =>
+      this < minimumValue ? null : this;
+
   /// Ensures that this value is not greater than the specified [maximumValue].
   ///
   /// Return this value if it's less than or equal to the [maximumValue] or the
@@ -47,6 +64,9 @@ extension NumX<T extends num> on T {
   /// ```
   T coerceAtMost(T maximumValue) =>
       this > maximumValue ? maximumValue : this;
+
+  T coerceAtMostOrNull(T maximumValue) =>
+      this > maximumValue ? null : this;
 
   /// Subtracts the other value from this value.
   T minus(T it) => it != null ? this - it : this;
