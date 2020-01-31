@@ -1001,4 +1001,22 @@ extension IterableX<E> on Iterable<E> {
     }
     return [t, f];
   }
+
+  Iterable<List<E>> splitBy(bool test(E it)) {
+    final lists = fold<List<List<E>>>([[]], (that, it) {
+      if (!test(it)) {
+        that.last.add(it);
+      } else {
+        if (that.last.isNotEmpty) {
+          that.add([]);
+        }
+      }
+      return that;
+    });
+
+    return lists.where((it) => it.isNotEmpty);
+  }
+
+  Iterable<List<E>> splitByNull() =>
+      splitBy((it) => it == null);
 }

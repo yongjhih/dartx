@@ -783,5 +783,32 @@ void main() {
         [2, 4, 6]
       ]);
     });
+    test('.splitBy() and .splitByNull()', () {
+      expect(
+        [1, 2, null, 3, null, 4].splitBy((it) => it == null),
+        [[1, 2], [3], [4]],
+      );
+      expect(
+        [1, 2, null, 3, null, 4].splitByNull(),
+        [[1, 2], [3], [4]],
+      );
+      expect(
+        [null, 1, 2, null, 3, null].splitBy((it) => it == null),
+        [[1, 2], [3]],
+      );
+      expect(
+        [].splitBy((it) => it == null),
+        [],
+      );
+      expect(
+        [null, null, null].splitBy((it) => it == null),
+        [],
+      );
+      expect(
+        [null].splitBy((it) => it == null),
+        [],
+      );
+    });
+
   });
 }
