@@ -783,6 +783,7 @@ void main() {
         [2, 4, 6]
       ]);
     });
+
     test('.splitBy() and .splitByNull()', () {
       expect(
         [1, 2, null, 3, null, 4].splitBy((it) => it == null),
@@ -807,6 +808,22 @@ void main() {
       expect(
         [null].splitBy((it) => it == null),
         [],
+      );
+      expect(
+        <String>[].splitBy((it) => it == ""),
+        [],
+      );
+      expect(
+        <String>["a", ",", "b", ",", "c"].splitBy((it) => it == ","),
+        [["a"], ["b"], ["c"]],
+      );
+      expect(
+        <String>["a", "b", ",", "c", "d"].splitBy((it) => it == ","),
+        [["a", "b"], ["c", "d"]],
+      );
+      expect(
+        <String>[",", "a", "b", ",", "c", ","].splitBy((it) => it == ","),
+        [["a", "b"], ["c"]],
       );
     });
 
