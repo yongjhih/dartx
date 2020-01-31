@@ -1034,4 +1034,10 @@ extension IterableX<E> on Iterable<E> {
   E middle() => elementAt(length ~/ 2);
 
   E middleOrNull() => elementAtOrNull(length ~/ 2);
+
+  // aka. nullIfEmpty
+  Iterable<E> _orNull() => isNotEmpty ? this : null;
+
+  double averageByOrNull(num selector(E element)) =>
+    _orNull()?.averageBy(selector);
 }

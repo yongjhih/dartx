@@ -38,5 +38,9 @@ void main() {
       // handles double values
       expect([1.5, 2, 2.5, 4, 5].median(), 2.5);
     });
+
+    test('.averageOrNull()', () {
+      expect(<num>[].averageOrNull(), null);
+    });
   });
 }

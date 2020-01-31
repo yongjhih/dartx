@@ -846,4 +846,7 @@ void main() {
       ],
     );
   });
+  test('.averageByOrNull()', () {
+    expect(<String>[].averageByOrNull((it) => it.length), null);
+  });
 }

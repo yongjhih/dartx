@@ -54,4 +54,9 @@ extension IterableNumX<T extends num> on Iterable<T> {
       return (x + y) / 2;
     }
   }
+
+  // aka. nullIfEmpty
+  Iterable<T> _orNull() => isNotEmpty ? this : null;
+
+  double averageOrNull() => _orNull()?.average();
 }
