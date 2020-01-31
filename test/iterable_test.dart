@@ -811,4 +811,34 @@ void main() {
     });
 
   });
+  test('.zipWith()', () {
+    expect(
+      ["one", "two", "three"].zipWith([1, 2, 3],
+         (a, b) => "${a}${b}"),
+      [
+        "one1",
+        "two2",
+        "three3",
+      ],
+    );
+    expect(
+      ["one", "two"].zipWith([1, 2, 3],
+       (a, b) => "${a}${b}"
+      ),
+      [
+        "one1",
+        "two2",
+      ],
+    );
+    expect(
+      ["one", "two", "three"].zipWith([1, 2],
+        (a, b) => "${a}${b}"
+      ),
+      [
+        "one1",
+        "two2",
+        "threenull",
+      ],
+    );
+  });
 }

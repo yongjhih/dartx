@@ -1019,4 +1019,15 @@ extension IterableX<E> on Iterable<E> {
 
   Iterable<List<E>> splitByNull() =>
       splitBy((it) => it == null);
+
+  Iterable<R> zipWith<E2, R>(Iterable<E2> other, R zipper(E a, E2 b)) sync* {
+    final otherIterator = other.iterator;
+    for (var it in this) {
+      if (otherIterator.moveNext()) {
+        yield zipper(it, otherIterator.current);
+      } else {
+        yield zipper(it, null);
+      }
+    }
+  }
 }
