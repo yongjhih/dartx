@@ -191,9 +191,7 @@ class IntRange extends IntProgression implements ClosedRange<num> {
   @override
   int get hashCode =>
     isEmpty ? -1 : 31 * start.hashCode + endInclusive.hashCode;
-}
 
-extension IntProgressionX on IntProgression {
   /// Creates a [IntRange] with a different [stepSize],
   /// keeps first and last value
   IntProgression step(int step) => IntProgression(_first, _last, step: step);
