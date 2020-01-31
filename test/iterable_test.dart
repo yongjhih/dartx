@@ -811,6 +811,11 @@ void main() {
     });
 
   });
+  test('.middle() and .middleOrNull()', () {
+    expect([1, 2, 3].middle(), 2);
+    expect([1, 2, 3, 4, 5].shuffled().sorted().middle(), 3);
+    expect([].middleOrNull(), null);
+  });
   test('.zipWith()', () {
     expect(
       ["one", "two", "three"].zipWith([1, 2, 3],

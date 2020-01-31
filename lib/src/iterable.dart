@@ -1030,4 +1030,8 @@ extension IterableX<E> on Iterable<E> {
       }
     }
   }
+
+  E middle() => elementAt(length ~/ 2);
+
+  E middleOrNull() => elementAtOrNull(length ~/ 2);
 }
