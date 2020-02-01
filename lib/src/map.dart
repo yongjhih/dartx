@@ -9,7 +9,9 @@ extension MapX<K, V> on Map<K, V> {
 
     other.forEach((k, v) {
       if (that.containsKey(k)) {
-        that[k] = reduce?.call(that[k], v) ?? v;
+        if (reduce != null) {
+          that[k] = reduce?.call(that[k], v);
+        }
       } else {
         if (putIfAbsent) {
            that.putIfAbsent(k, () => v);
