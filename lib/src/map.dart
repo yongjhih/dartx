@@ -18,8 +18,9 @@ extension MapX<K, V> on Map<K, V> {
   /// Returns a new map with all key/value pairs in both [this] and [other].
   ///
   /// If there are keys that occur in both maps, the [value] function is used to
-  /// select the value that goes into the resulting map based on the two original
-  /// values. If [value] is omitted, the value from [other] is used.
+  /// select the value that goes into the resulting map based
+  /// on the two original values. If [value] is omitted,
+  /// the value from [other] is used.
   Map<K, V> merge(Map<K, V> other, {
     V value(V that, V it),
   }) => mergeMaps(this, other, value: value);
@@ -27,8 +28,9 @@ extension MapX<K, V> on Map<K, V> {
   /// Returns a new map with new values from [other]
   ///
   /// If there are keys that occur in both maps, the [value] function is used to
-  /// select the value that goes into the resulting map based on the two original
-  /// values. If [value] is omitted, the value from [other] is used.
+  /// select the value that goes into the resulting map based
+  /// on the two original values. If [value] is omitted,
+  /// the value from [other] is used.
   Map<K, V> mergeWith(Map<K, V> other, {
     V value(V that, V it),
     bool putIfAbsent = true,
@@ -51,4 +53,15 @@ extension MapX<K, V> on Map<K, V> {
     });
     return that;
   }
+}
+
+const _transitiveClosure = transitiveClosure;
+const _stronglyConnectedComponents = stronglyConnectedComponents;
+
+extension MapIterableX<T> on Map<T, Iterable<T>> {
+  Map<T, Set<T>> transitiveClosure() =>
+    _transitiveClosure<T>(this);
+
+  List<Set<T>> stronglyConnectedComponents() =>
+    _stronglyConnectedComponents<T>(this);
 }
