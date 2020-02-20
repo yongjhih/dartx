@@ -1002,6 +1002,13 @@ extension IterableX<E> on Iterable<E> {
     return [t, f];
   }
 
+  /// Splits the collection into the lists according to [predicate].
+  ///
+  /// The list contains continuous elements for
+  /// which [predicate] yielded true,
+  ///
+  /// while elements will be removed as separator
+  /// for which [predicate] yielded false.
   Iterable<List<E>> splitBy(bool test(E it)) {
     final lists = fold<List<List<E>>>([[]], (that, it) {
       if (!test(it)) {
@@ -1020,6 +1027,8 @@ extension IterableX<E> on Iterable<E> {
   Iterable<List<E>> splitByNull() =>
       splitBy((it) => it == null);
 
+  /// Combines the current iterable together with another
+  /// iterable using a given zipper function.
   Iterable<R> zipWith<E2, R>(Iterable<E2> other, R zipper(E a, E2 b)) sync* {
     final otherIterator = other.iterator;
     for (var it in this) {
