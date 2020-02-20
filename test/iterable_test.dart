@@ -866,4 +866,19 @@ void main() {
   test('.averageByOrNull()', () {
     expect(<String>[].averageByOrNull((it) => it.length), null);
   });
+
+  test('should .partitionsBy', () {
+    expect(
+      [1, 2, null, null, 3, null, 4].partitionsBy((it) => it == null),
+      [[1, 2], [null, null], [3], [null], [4]],
+    );
+    expect(
+      [1, 2, 3, 5, 4, 6, 0].partitionsBy((it) => (it % 2) == 0),
+      [[1], [2], [3, 5], [4, 6, 0]],
+    );
+    expect(
+      [].partitionsBy((it) => it == null),
+      [[]],
+    );
+  });
 }

@@ -1040,4 +1040,27 @@ extension IterableX<E> on Iterable<E> {
 
   double averageByOrNull(num selector(E element)) =>
     _orNull()?.averageBy(selector);
+
+  /// Splits the collection into the lists according to [predicate].
+  ///
+  /// The list contains continuous elements for
+  /// which [predicate] yielded true,
+  /// while another list contains elements for which [predicate] yielded false.
+  Iterable<List<E>> partitionsBy(bool test(E it)) {
+    if (isEmpty) {
+      return [[]];
+    }
+
+    final lists = skip(1).fold<List<List<E>>>([[first]], (that, it) {
+      final changed = test(that.last.last) != test(it);
+      if (changed) {
+        that.add([it]);
+      } else {
+        that.last.add(it);
+      }
+      return that;
+    });
+
+    return lists;
+  }
 }
