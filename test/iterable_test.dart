@@ -520,16 +520,16 @@ void main() {
       );
     });
 
-    test('.distinct()', () {
-      expect([].distinct(), []);
+    test('.distinctUnique()', () {
+      expect([].distinctUnique(), []);
       var list = ['h', 'hi', 'h', 'test', 'hi', 'test', 'hi', 'h', 'hello'];
-      expect(list.distinct(), ['h', 'hi', 'test', 'hello']);
+      expect(list.distinctUnique(), ['h', 'hi', 'test', 'hello']);
     });
 
-    test('.distinctBy()', () {
-      expect([].distinctBy((it) => 1), []);
+    test('.distinctUniqueBy()', () {
+      expect([].distinctUniqueBy((it) => 1), []);
       var list = ['oh', 'hi', 'oh', 'test1', 'hi', 'test1', 'hi', 'hello'];
-      expect(list.distinctBy((it) => it.length), ['oh', 'test1']);
+      expect(list.distinctUniqueBy((it) => it.length), ['oh', 'test1']);
     });
 
     test('.chunked()', () {
@@ -827,58 +827,114 @@ void main() {
       );
     });
 
-  });
-  test('.middle() and .middleOrNull()', () {
-    expect([1, 2, 3].middle(), 2);
-    expect([1, 2, 3, 4, 5].shuffled().sorted().middle(), 3);
-    expect([].middleOrNull(), null);
-  });
-  test('.zipWith()', () {
-    expect(
-      ["one", "two", "three"].zipWith([1, 2, 3],
-         (a, b) => "${a}${b}"),
-      [
-        "one1",
-        "two2",
-        "three3",
-      ],
-    );
-    expect(
-      ["one", "two"].zipWith([1, 2, 3],
-       (a, b) => "${a}${b}"
-      ),
-      [
-        "one1",
-        "two2",
-      ],
-    );
-    expect(
-      ["one", "two", "three"].zipWith([1, 2],
+    test('.middle() and .middleOrNull()', () {
+      expect([1, 2, 3].middle(), 2);
+      expect([1, 2, 3, 4, 5].shuffled().sorted().middle(), 3);
+      expect([].middleOrNull(), null);
+    });
+    test('.zipWith()', () {
+      expect(
+        ["one", "two", "three"].zipWith([1, 2, 3],
+          (a, b) => "${a}${b}"),
+        [
+          "one1",
+          "two2",
+          "three3",
+        ],
+      );
+      expect(
+        ["one", "two"].zipWith([1, 2, 3],
         (a, b) => "${a}${b}"
-      ),
-      [
-        "one1",
-        "two2",
-        "threenull",
-      ],
-    );
-  });
-  test('.averageByOrNull()', () {
-    expect(<String>[].averageByOrNull((it) => it.length), null);
-  });
+        ),
+        [
+          "one1",
+          "two2",
+        ],
+      );
+      expect(
+        ["one", "two", "three"].zipWith([1, 2],
+          (a, b) => "${a}${b}"
+        ),
+        [
+          "one1",
+          "two2",
+          "threenull",
+        ],
+      );
+    });
+    test('.averageByOrNull()', () {
+      expect(<String>[].averageByOrNull((it) => it.length), null);
+    });
 
-  test('should .partitionsBy', () {
-    expect(
-      [1, 2, null, null, 3, null, 4].partitionsBy((it) => it == null),
-      [[1, 2], [null, null], [3], [null], [4]],
-    );
-    expect(
-      [1, 2, 3, 5, 4, 6, 0].partitionsBy((it) => (it % 2) == 0),
-      [[1], [2], [3, 5], [4, 6, 0]],
-    );
-    expect(
-      [].partitionsBy((it) => it == null),
-      [[]],
-    );
+    test('should .partitionsBy()', () {
+      expect(
+        [1, 2, null, null, 3, null, 4].partitionsBy((it) => it == null),
+        [[1, 2], [null, null], [3], [null], [4]],
+      );
+      expect(
+        [1, 2, 3, 5, 4, 6, 0].partitionsBy((it) => (it % 2) == 0),
+        [[1], [2], [3, 5], [4, 6, 0]],
+      );
+      expect(
+        [].partitionsBy((it) => it == null),
+        [[]],
+      );
+    });
+    test('should .distinctUniqueOr()', () {
+      expect(
+        [1, 2, 3, 3].distinctUniqueOr(null),
+        [1, 2, 3, null],
+      );
+      expect(
+        [1, 1, 2, 3, 3, 2].distinctUniqueOr(null),
+        [1, null, 2, 3, null, null],
+      );
+      expect(
+        [1,  2, 2, 3].distinctUniqueOr(null),
+        [1, 2, null, 3],
+      );
+    });
+
+    test('.distinct()', () {
+      expect([].distinct(), []);
+      final list = ['h', 'hi', 'h', 'test', 'hi', 'test', 'hi', 'h', 'hello'];
+      expect(list.distinct(),
+        ['h', 'hi', 'h', 'test', 'hi', 'test', 'hi', 'h', 'hello']);
+    });
+
+    test('.distinct(selector)', () {
+      expect([].distinct((it) => 1), []);
+      final list = ['oh', 'hi', 'oh', 'test1', 'hi', 'test1', 'hi', 'hello'];
+      expect(list.distinct((it) => it.length),
+        ['oh', 'test1', 'hi', 'test1', 'hi', 'hello']);
+    });
+
+    test('should .repeatBy()', () {
+      expect(
+        [1, 2, null, null, null, 3, null, 4]
+        .repeatBy((it) => it == null, (that, it) => that),
+        [[1, 2], [2, 3], [3], [3, 4], [4]],
+      );
+      expect(
+        [null, null, null, null, 3, null, 4]
+        .repeatBy((it) => it == null, (that, it) => that),
+        [[3], [3], [3, 4], [4]],
+      );
+      expect(
+        [null, 1, 2, null, null, null, 3, null, 4]
+        .repeatBy((it) => it == null, (that, it) => that),
+        [[1], [1, 2], [2, 3], [3], [3, 4], [4]],
+      );
+      expect(
+        [null, null, null, null, 3, null, 4, null]
+        .repeatBy((it) => it == null, (that, it) => that),
+        [[3], [3], [3, 4], [4], [4, 4]],
+      );
+      expect(
+        [1, 2, null, null, null, 3, null, 4, null, null]
+        .repeatBy((it) => it == null, (that, it) => that),
+        [[1, 2], [2, 3], [3], [3, 4], [4], [4, 4]],
+      );
+    });
   });
 }

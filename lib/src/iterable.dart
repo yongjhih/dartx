@@ -656,7 +656,7 @@ extension IterableX<E> on Iterable<E> {
   ///
   /// The elements in the resulting list are in the same order as they were in
   /// the source collection.
-  Iterable<E> distinct() sync* {
+  Iterable<E> distinctUnique() sync* {
     var existing = HashSet<E>();
     for (var current in this) {
       if (existing.add(current)) {
@@ -670,7 +670,7 @@ extension IterableX<E> on Iterable<E> {
   ///
   /// The elements in the resulting list are in the same order as they were in
   /// the source collection.
-  Iterable<E> distinctBy<R>(R selector(E element)) sync* {
+  Iterable<E> distinctUniqueBy<R>(R selector(E element)) sync* {
     var existing = HashSet<R>();
     for (var current in this) {
       if (existing.add(selector(current))) {
@@ -1071,5 +1071,132 @@ extension IterableX<E> on Iterable<E> {
     });
 
     return lists;
+  }
+
+  Iterable<List<E>> repeatBy(bool test(E it), E repeat(E repeater, E element)) {
+    if (isEmpty) {
+      return [[]];
+    }
+
+    final lists = skip(1).fold<List<List<E>>>([[first]], (that, it) {
+      if (test(it)) { // it == null
+        // repeating for current
+        if (test(that.last.last)) { // it == null && last == null
+          // skip
+        } else { // it == null && last != null
+          // repeat by repeater
+          that.add([repeat(that.last.last, it), it]);
+        }
+      } else { // it != null
+        if (test(that.last.last)) { // it != null && last == null
+          that.last.last = repeat(it, that.last.last);
+          that.add([it]);
+        } else { // it != null && last != null
+          that.last.add(it);
+        }
+      }
+
+      return that;
+    });
+
+    if (test(lists.last.last)) { // it != null && last == null
+      final repeater = lists.last.lastWhere((it) => !test(it));
+      if (repeater != null) {
+        lists.last.last = repeat(repeater, lists.last.last);
+      }
+    }
+
+    return lists.where((it) => it.every((that) => !test(that)));
+  }
+
+  /// Returns a new lazy [Iterable] containing only elements
+  /// or null from the collection having distinct keys returned
+  /// by the given [selector] function.
+  ///
+  /// The elements in the resulting list are in the same order as they were in
+  /// the source collection.
+  Iterable<E> distinctUniqueOr<R>(E element, [R selector(E element)]) sync* {
+    if (selector != null) {
+      final existing = HashSet<R>();
+      for (var current in this) {
+        if (existing.add(selector(current))) {
+          yield current;
+        } else {
+          yield element;
+        }
+      }
+    } else {
+      final existing = HashSet<E>();
+      for (var current in this) {
+        if (existing.add(current)) {
+          yield current;
+        } else {
+          yield element;
+        }
+      }
+    }
+  }
+
+  /// Returns a new lazy [Iterable] containing only elements
+  /// or null from the collection having distinct keys returned
+  /// by the given [selector] function.
+  ///
+  /// The elements in the resulting list are in the same order as they were in
+  /// the source collection.
+  /// 
+  /// @optionalTypeArgs
+  Iterable<E> distinctUniqueOrBy<R>(E orElse(E element),
+   [R selector(E element)]) sync* {
+    if (selector != null) {
+      final existing = HashSet<R>();
+      for (var current in this) {
+        if (existing.add(selector(current))) {
+          yield current;
+        } else {
+          yield orElse(current);
+        }
+      }
+    } else {
+      final existing = HashSet<E>();
+      for (var current in this) {
+        if (existing.add(current)) {
+          yield current;
+        } else {
+          yield orElse(current);
+        }
+      }
+    }
+  }
+
+  /// Returns a new lazy [Iterable] containing only distinct elements from the
+  /// collection.
+  ///
+  /// The elements in the resulting list are in the same order as they were in
+  /// the source collection.
+  /// 
+  /// @optionalTypeArgs
+  Iterable<E> distinct<R>([R selector(E element)]) sync* {
+    if (isEmpty) {
+      return;
+    }
+
+    var last = first;
+    yield last;
+
+    if (selector != null) {
+      for (var current in skip(1)) {
+        if (selector(current) != selector(last)) {
+          last = current;
+          yield current;
+        }
+      }
+    } else {
+      for (var current in skip(1)) {
+          if (current != last) {
+            last = current;
+            yield current;
+          }
+        }
+      }
   }
 }
