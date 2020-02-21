@@ -900,6 +900,15 @@ void main() {
       final list = ['h', 'hi', 'h', 'test', 'hi', 'test', 'hi', 'h', 'hello'];
       expect(list.distinct(),
         ['h', 'hi', 'h', 'test', 'hi', 'test', 'hi', 'h', 'hello']);
+
+      expect([1, 2, 2, 3].distinct(),
+        [1, 2, 3]);
+      expect([1, 2, 3].distinct(),
+        [1, 2, 3]);
+      expect([1, 2, 3, 2, 1].distinct(),
+        [1, 2, 3, 2, 1]);
+      expect([3, 2, 1, 1, 2, 3].distinct(),
+        [3, 2, 1, 2, 3]);
     });
 
     test('.distinct(selector)', () {
