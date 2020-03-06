@@ -19,11 +19,11 @@ extension ComparableX<T extends Comparable<T>> on T {
           'maximum $maximumValue is less than minimum $minimumValue.');
     }
     if (this < minimumValue) {
-      return null;
+      return minimumValue;
     }
 
     if (maximumValue != null && this > maximumValue) {
-      return null;
+      return maximumValue;
     }
 
     return this;
