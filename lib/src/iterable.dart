@@ -656,15 +656,17 @@ extension IterableX<E> on Iterable<E> {
   ///
   /// The elements in the resulting list are in the same order as they were in
   /// the source collection.
-  Iterable<E> distinctUnique<R>([R selector(E element)]) sync* {
-    if (selector != null) {
-      distinctUniqueBy<R>(selector);
-    } else {
-      var existing = HashSet<E>();
-      for (var current in this) {
-        if (existing.add(current)) {
-          yield current;
-        }
+  Iterable<E> distinctUnique<R>([R selector(E element)]) {
+    return selector != null
+      ? distinctUniqueBy<R>(selector)
+      : _distinctUnique();
+  }
+
+  Iterable<E> _distinctUnique() sync* {
+    var existing = HashSet<E>();
+    for (var current in this) {
+      if (existing.add(current)) {
+        yield current;
       }
     }
   }
@@ -1119,26 +1121,8 @@ extension IterableX<E> on Iterable<E> {
   ///
   /// The elements in the resulting list are in the same order as they were in
   /// the source collection.
-  Iterable<E> distinctUniqueOr<R>(E element, [R selector(E element)]) sync* {
-    if (selector != null) {
-      final existing = HashSet<R>();
-      for (var current in this) {
-        if (existing.add(selector(current))) {
-          yield current;
-        } else {
-          yield element;
-        }
-      }
-    } else {
-      final existing = HashSet<E>();
-      for (var current in this) {
-        if (existing.add(current)) {
-          yield current;
-        } else {
-          yield element;
-        }
-      }
-    }
+  Iterable<E> distinctUniqueOr<R>(E element, [R selector(E element)]) {
+    return distinctUniqueOrBy<R>((it) => element, selector);
   }
 
   /// Returns a new lazy [Iterable] containing only elements
@@ -1150,7 +1134,7 @@ extension IterableX<E> on Iterable<E> {
   /// 
   /// @optionalTypeArgs
   Iterable<E> distinctUniqueOrBy<R>(E orElse(E element),
-   [R selector(E element)]) sync* {
+    [R selector(E element)]) sync* {
     if (selector != null) {
       final existing = HashSet<R>();
       for (var current in this) {

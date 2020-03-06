@@ -524,6 +524,10 @@ void main() {
       expect([].distinctUnique(), []);
       var list = ['h', 'hi', 'h', 'test', 'hi', 'test', 'hi', 'h', 'hello'];
       expect(list.distinctUnique(), ['h', 'hi', 'test', 'hello']);
+
+      expect([].distinctUnique((it) => 1), []);
+      var list2 = ['oh', 'hi', 'oh', 'test1', 'hi', 'test1', 'hi', 'hello'];
+      expect(list2.distinctUnique((it) => it.length), ['oh', 'test1']);
     });
 
     test('.distinctUniqueBy()', () {
@@ -891,6 +895,20 @@ void main() {
       );
       expect(
         [1,  2, 2, 3].distinctUniqueOr(null),
+        [1, 2, null, 3],
+      );
+    });
+    test('should .distinctUniqueOrBy()', () {
+      expect(
+        [1, 2, 3, 3].distinctUniqueOrBy((it) => null),
+        [1, 2, 3, null],
+      );
+      expect(
+        [1, 1, 2, 3, 3, 2].distinctUniqueOrBy((it) => null),
+        [1, null, 2, 3, null, null],
+      );
+      expect(
+        [1,  2, 2, 3].distinctUniqueOrBy((it) => null),
         [1, 2, null, 3],
       );
     });
