@@ -56,7 +56,7 @@ void main() {
       };
       expect(a.mergeWith(b), expected);
     });
-    test('.mergeWith(reduce: (that, it))', () {
+    test('.mergeWith(value: (that, it))', () {
       final a = <String, int>{
         "a": 1,
         "ab": 2,
@@ -68,7 +68,7 @@ void main() {
         "abc": 3,
       };
       expect(
-        a.mergeWith(b, reduce: (that, it) => that + it),
+        a.mergeWith(b, value: (that, it) => that + it),
         <String, int>{
           "a": 2,
           "ab": 4,
@@ -83,7 +83,7 @@ void main() {
           "abc": 3,
         }.mergeWith(<String, int>{
           "ab": 2,
-        }, reduce: (that, it) => that + it),
+        }, value: (that, it) => that + it),
         <String, int>{
           "a": 1,
           "ab": 4,
@@ -98,7 +98,7 @@ void main() {
           "abc": 3,
         }.mergeWith(<String, int>{
           "abcd": 2,
-        }, reduce: (that, it) => that + it),
+        }, value: (that, it) => that + it),
         <String, int>{
           "a": 1,
           "ab": 2,
@@ -115,7 +115,7 @@ void main() {
           "abc": 3,
         }.mergeWith(<String, int>{
           "abcd": 2,
-        }, reduce: (that, it) => that + it, putIfAbsent: false),
+        }, value: (that, it) => that + it, putIfAbsent: false),
         <String, int>{
           "a": 1,
           "ab": 2,
