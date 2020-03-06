@@ -962,6 +962,11 @@ void main() {
         .repeatBy((it) => it == null, (that, it) => that),
         [[1, 2], [2, 3], [3], [3, 4], [4], [4, 4]],
       );
+      expect(
+        <int>[null, null, null, null, null]
+        .repeatBy((it) => it == null, (that, it) => that),
+        [],
+      );
     });
   });
 }

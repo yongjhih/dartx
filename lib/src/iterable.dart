@@ -1106,7 +1106,7 @@ extension IterableX<E> on Iterable<E> {
     });
 
     if (test(lists.last.last)) { // it != null && last == null
-      final repeater = lists.last.lastWhere((it) => !test(it));
+      final repeater = lists.last.lastOrNullWhere((it) => !test(it));
       if (repeater != null) {
         lists.last.last = repeat(repeater, lists.last.last);
       }
