@@ -656,11 +656,15 @@ extension IterableX<E> on Iterable<E> {
   ///
   /// The elements in the resulting list are in the same order as they were in
   /// the source collection.
-  Iterable<E> distinctUnique() sync* {
-    var existing = HashSet<E>();
-    for (var current in this) {
-      if (existing.add(current)) {
-        yield current;
+  Iterable<E> distinctUnique<R>([R selector(E element)]) sync* {
+    if (selector != null) {
+      distinctUniqueBy<R>(selector);
+    } else {
+      var existing = HashSet<E>();
+      for (var current in this) {
+        if (existing.add(current)) {
+          yield current;
+        }
       }
     }
   }
