@@ -246,15 +246,15 @@ void main() {
     });
 
     test('.min()', () {
-      expect([].min(), null);
-      expect([3].min(), 3);
-      expect([0, 1, 2, 3, 4, 5, 6].min(), 0);
+      expect(<num>[].min(), null);
+      expect(<num>[3].min(), 3);
+      expect(<num>[0, 1, 2, 3, 4, 5, 6].min(), 0);
     });
 
     test('.max()', () {
-      expect([].max(), null);
-      expect([3].max(), 3);
-      expect([0, 1, 2, 3, 4, 5, 6].max(), 6);
+      expect(<num>[].max(), null);
+      expect(<num>[3].max(), 3);
+      expect(<num>[0, 1, 2, 3, 4, 5, 6].max(), 6);
     });
 
     test('.minBy()', () {

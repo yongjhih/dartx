@@ -334,11 +334,6 @@ extension IterableX<E> on Iterable<E> {
     }
   }
 
-  /// Returns the smallest element or `null` if there are no elements.
-  ///
-  /// All elements must be of type [Comparable].
-  E min() => _minMax(-1);
-
   /// Returns the first element yielding the smallest value of the given
   /// [selector] or `null` if there are no elements.
   E minBy(Comparable selector(E element)) => _minMaxBy(-1, selector);
@@ -347,11 +342,6 @@ extension IterableX<E> on Iterable<E> {
   /// provided [comparator] or `null` if there are no elements.
   E minWith(Comparator<E> comparator) => _minMaxWith(-1, comparator);
 
-  /// Returns the largest element or `null` if there are no elements.
-  ///
-  /// All elements must be of type [Comparable].
-  E max() => _minMax(1);
-
   /// Returns the first element yielding the largest value of the given
   /// [selector] or `null` if there are no elements.
   E maxBy(Comparable selector(E element)) => _minMaxBy(1, selector);
@@ -359,20 +349,6 @@ extension IterableX<E> on Iterable<E> {
   /// Returns the first element having the largest value according to the
   /// provided [comparator] or `null` if there are no elements.
   E maxWith(Comparator<E> comparator) => _minMaxWith(1, comparator);
-
-  E _minMax(int order) {
-    var it = iterator;
-    it.moveNext();
-    var currentMin = it.current;
-
-    while (it.moveNext()) {
-      if ((it.current as Comparable).compareTo(currentMin) == order) {
-        currentMin = it.current;
-      }
-    }
-
-    return currentMin;
-  }
 
   E _minMaxBy(int order, Comparable selector(E element)) {
     var it = iterator;
@@ -1250,4 +1226,27 @@ extension IterableIterableX<E> on Iterable<Iterable<E>> {
       yield* current;
     }
   }
+}
+
+extension ComparableIterableX<E extends Comparable<E>> on Iterable<E> {
+  /// Returns the smallest element or `null` if there are no elements.
+  E min() => _minMax(-1);
+
+  /// Returns the largest element or `null` if there are no elements.
+  E max() => _minMax(1);
+
+  E _minMax(int order) {
+    var it = iterator;
+    it.moveNext();
+    var currentMin = it.current;
+
+    while (it.moveNext()) {
+      if ((it.current).compareTo(currentMin) == order) {
+        currentMin = it.current;
+      }
+    }
+
+    return currentMin;
+  }
+
 }
